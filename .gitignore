@@ -192,3 +192,13 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+# IDE/editor settings
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# MacOS / Unix system files
+.DS_Store
+*.swp
