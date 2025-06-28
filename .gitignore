@@ -196,6 +196,7 @@ cython_debug/
 # IDE/editor settings
 .idea/
 .vscode/
+.history/
 *.sublime-project
 *.sublime-workspace
 
