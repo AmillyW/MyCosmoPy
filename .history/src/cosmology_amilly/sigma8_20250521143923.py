@@ -11,7 +11,7 @@ def read_power_spectrum(file_path):
 
 
 def build_Pk_interpolator(k1, P1):
-    return interp1d(k1, P1, bounds_error=False, fill_value=0.0)
+    return interp1d(k1, P1)
 
 
 def dimensionless_power_spectrum(k2, P2):

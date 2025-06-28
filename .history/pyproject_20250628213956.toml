@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools >= 61.0", "wheel", "Cython", "numpy"]
-build-backend = "setuptools.build_meta"
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "Setuptools.build_meta"
 
 [project]
 name = "cosmology_amilly"
-version = "0.1.0"
+version = "0.0.1"
 authors = [{ name = "Shuyan Wang", email = "amillyforph@outlook.com" }]
 description = "A Python package for cosmology calculations"
 readme = "README.md"
@@ -19,6 +19,14 @@ classifiers = [
 
 [project.urls]
 Homepage = "https://github.com/AmillyW/MyCosmoPy"
+# Documentation = "https://cosmology-toolkit.readthedocs.io"
 
-[tool.setuptools.packages.find]
-where = ["src"]
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.package-data]
+cosmology = ["data/*.dat"]
+
+[project.optional-dependencies]
+test = ["pytest>=6.0", "pytest-cov"]
+docs = ["sphinx>=4.0", "nbsphinx"]
