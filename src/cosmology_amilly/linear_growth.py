@@ -44,12 +44,12 @@ class Linear_Growth:
         return f
 
     def Sound_Horizon(self, H0, a7):
-        def sound_speed_radation(a5):
+        def sound_speed_radiation(a5):
             C_s = 1 / (np.sqrt(3 * (a5 * (3 * self.Omega_m) / (4 * self.Omega_r) + 1)))
             return C_s
 
         def integrand_SH(a6):
-            return sound_speed_radation(a6) / (a6 * a6 * H0 * self.Friedmann_E(a6))
+            return sound_speed_radiation(a6) / (a6 * a6 * H0 * self.Friedmann_E(a6))
 
         SH, _ = quad(integrand_SH, 0, a7)
         return SH
