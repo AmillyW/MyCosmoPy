@@ -18,6 +18,11 @@ class K_Space_Grid:
         kx = np.fft.fftfreq(self.N_grid, d=self.H) * 2 * np.pi
         ky = np.fft.fftfreq(self.N_grid, d=self.H) * 2 * np.pi
         kz = np.fft.rfftfreq(self.N_grid, d=self.H) * 2 * np.pi
+
+        self.kx_axis = kx
+        self.ky_axis = ky
+        self.kz_axis = kz
+
         self.kX, self.kY, self.kZ = np.meshgrid(kx, ky, kz, indexing="ij")
         self.k = np.sqrt(self.kX * self.kX + self.kY * self.kY + self.kZ * self.kZ)
         self.discrete_k = self.k_discretization()
