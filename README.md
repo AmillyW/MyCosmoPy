@@ -22,7 +22,7 @@ This project follows a rigorous development roadmap aligned with my theoretical 
 
   - [X] Gaussian Random Field (GRF) generation using FFTW interfaces.
   - [X] Power Spectrum ($P(k)$) estimation and verification.
-- **N-Body Simulation (Particle-Mesh)** (🚧 In Progress - See `nbody` branch)
+- **N-Body Simulation (Particle-Mesh)** (🚧 In Progress - will upload after testing is complete)
 
   - [X] Mass Assignment Schemes: Nearest Grid Point (NGP) & Cloud-in-Cell (CIC).
   - [ ] **Current Focus:** Implementing interlacing to suppress aliasing/shot noise.
