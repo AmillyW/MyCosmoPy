@@ -11,7 +11,24 @@ def read_power_spectrum(file_path):
 
 
 def build_Pk_interpolator(k1, P1):
-    return interp1d(k1, P1, bounds_error=False, fill_value=0.0)
+    log_k1 = np.log(k1)
+    log_P1 = np.log(P1)
+    interp_func = interp1d(
+        log_k1, log_P1, kind="cubic", bounds_error=False, fill_value="extrapolate"
+    )
+
+    def Pk_func(k):
+        k = np.asarray(k)
+        is_scalar = k.ndim == 0
+        k_arr = np.atleast_1d(k)
+
+        res = np.zeros_like(k_arr, dtype=float)
+        mask = k_arr > 0
+        res[mask] = np.exp(interp_func(np.log(k_arr[mask])))
+
+        return res[0] if is_scalar else res
+
+    return Pk_func
 
 
 def dimensionless_power_spectrum(k2, P2):
@@ -40,7 +57,7 @@ class Power_Spectrum:
             Delta2 = dimensionless_power_spectrum(k, Pk)
             return W**2 * Delta2 / k
 
-        result, _ = quad(integrand, 0, self.k_vals[-1])
+        result, _ = quad(integrand, self.k_vals[0], self.k_vals[-1])
         return np.sqrt(result)
 
     def sigma_8(self):

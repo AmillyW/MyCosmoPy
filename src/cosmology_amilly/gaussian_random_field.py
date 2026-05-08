@@ -39,10 +39,7 @@ class Gaussian_Random_Field:
     @cached_property
     def get_rescaled_fourier_mode(self):
         delta_k = self.get_fourier_mode
-        k_safe = np.where(self.grid.k == 0, 1, self.grid.k)
-        scaling = np.where(
-            self.grid.k == 0, 0, np.sqrt(self.PL_fit(k_safe) / (self.grid.H**3))
-        )
+        scaling = np.sqrt(self.PL_fit(self.grid.k) / (self.grid.H**3))
         self._rescaled_fourier_mode = scaling * delta_k
         return self._rescaled_fourier_mode
 
