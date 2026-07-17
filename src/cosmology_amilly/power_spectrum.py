@@ -10,6 +10,12 @@ def read_power_spectrum(file_path):
     return k_vals, P_vals
 
 
+def build_log_k_grid(k_min, k_max, n_k=512):
+    if n_k % 2 != 0:
+        raise ValueError("n_k must be even for FAST-PT compatibility.")
+    return np.logspace(np.log10(k_min), np.log10(k_max), n_k)
+
+
 def build_Pk_interpolator(k1, P1):
     log_k1 = np.log(k1)
     log_P1 = np.log(P1)
@@ -42,10 +48,21 @@ def Window_Function_Fourier(k3, R3):
 
 
 class Power_Spectrum:
-    def __init__(self, z, file_path):
+    def __init__(self, z, file_path, k_Log=None, n_k=512, use_log_grid=True):
         self.z = z
-        self.k_vals, self.P_vals = read_power_spectrum(file_path)
-        self.Pk_interp = build_Pk_interpolator(self.k_vals, self.P_vals)
+        self.k_raw, self.P_raw = read_power_spectrum(file_path)
+        self.Pk_interp = build_Pk_interpolator(self.k_raw, self.P_raw)
+
+        if k_Log is not None:
+            self.k_vals = np.asarray(k_Log, dtype=float)
+            if self.k_vals.size % 2 != 0:
+                raise ValueError("k_Log must contain an even number of points.")
+        elif use_log_grid:
+            self.k_vals = build_log_k_grid(self.k_raw[0], self.k_raw[-1], n_k=n_k)
+        else:
+            self.k_vals = self.k_raw
+
+        self.P_vals = self.Pk_interp(self.k_vals)
         self.dimensionless_Pk = dimensionless_power_spectrum(self.k_vals, self.P_vals)
 
     def sigma_R(self, R):
@@ -57,7 +74,7 @@ class Power_Spectrum:
             Delta2 = dimensionless_power_spectrum(k, Pk)
             return W**2 * Delta2 / k
 
-        result, _ = quad(integrand, self.k_vals[0], self.k_vals[-1])
+        result, _ = quad(integrand, self.k_raw[0], self.k_raw[-1])
         return np.sqrt(result)
 
     def sigma_8(self):
